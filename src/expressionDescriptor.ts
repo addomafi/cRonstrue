@@ -53,6 +53,45 @@ export class ExpressionDescriptor {
     return descripter.getFullDescription();
   }
 
+  /**
+   * Converts a cron expression into a description a human can read
+   * @static
+   * @param {string} expression - The cron expression
+   * @param {IOptions} [{
+   *         throwExceptionOnParseError = true,
+   *         casingType = CasingTypeEnum.Sentence,
+   *         verbose = false,
+   *         dayOfWeekStartIndexZero = true,
+   *         use24HourTimeFormat = false,
+   *         locale = 'en'
+   *     }={}]
+   * @returns {string}
+   */
+  static parse(
+    expression: string,
+    {
+      throwExceptionOnParseError = true,
+      verbose = false,
+      dayOfWeekStartIndexZero = true,
+      use24HourTimeFormat,
+      locale = "en"
+    }: Options = {}
+  ): string[] {
+    // We take advantage of Destructuring Object Parameters (and defaults) in TS/ES6 and now we will reassemble back to
+    // an Options type so we can pass around options with ease.
+
+    let options = <Options>{
+      throwExceptionOnParseError: throwExceptionOnParseError,
+      verbose: verbose,
+      dayOfWeekStartIndexZero: dayOfWeekStartIndexZero,
+      use24HourTimeFormat: use24HourTimeFormat,
+      locale: locale
+    };
+
+    let parser = new CronParser(expression, options.dayOfWeekStartIndexZero);
+    return parser.parse();
+  }
+
   static initialize(localesLoader: LocaleLoader) {
     ExpressionDescriptor.specialCharacters = ["/", "-", ",", "*"];
 

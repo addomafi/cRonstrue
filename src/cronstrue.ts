@@ -5,4 +5,5 @@ ExpressionDescriptor.initialize(new enLocaleLoader());
 export default ExpressionDescriptor;
 
 let toString = ExpressionDescriptor.toString;
+let parse = ExpressionDescriptor.parse;
 export { toString };
